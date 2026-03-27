@@ -1,0 +1,25 @@
+{
+  "name": "signalk-floatilla-anchor-watch",
+  "version": "1.0.0",
+  "description": "Anchor watch alarm with drag detection and webhook notifications",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "anchor-watch",
+    "anchor-alarm",
+    "drag-detection",
+    "webhooks",
+    "vessel-monitoring",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "signalk-plugin-enabled-by-default": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "anchor-watch"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla"
+}
