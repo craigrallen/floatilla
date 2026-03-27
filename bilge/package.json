@@ -1,0 +1,25 @@
+{
+  "name": "signalk-floatilla-bilge",
+  "version": "1.0.0",
+  "description": "Bilge pump cycle counter and frequency alert plugin",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "bilge",
+    "bilge-pump",
+    "pump-monitor",
+    "flooding-alert",
+    "vessel-monitoring",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "signalk-plugin-enabled-by-default": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "bilge"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla"
+}
