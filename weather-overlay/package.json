@@ -1,0 +1,23 @@
+{
+  "name": "signalk-floatilla-weather-overlay",
+  "version": "1.0.0",
+  "description": "Open-Meteo weather forecast overlay for SignalK",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "weather",
+    "forecast",
+    "open-meteo",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "weather-overlay"
+  },
+  "signalk-plugin-enabled-by-default": false,
+  "homepage": "https://github.com/craigrallen/floatilla"
+}
