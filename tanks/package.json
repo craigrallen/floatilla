@@ -1,0 +1,24 @@
+{
+  "name": "signalk-floatilla-tanks",
+  "version": "1.0.0",
+  "description": "Tank monitoring with fill rate, usage tracking and time-to-empty estimation",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "tanks",
+    "fuel",
+    "water",
+    "monitoring",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "tanks"
+  },
+  "signalk-plugin-enabled-by-default": false,
+  "homepage": "https://github.com/craigrallen/floatilla"
+}
