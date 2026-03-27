@@ -1,0 +1,24 @@
+{
+  "name": "signalk-floatilla-mob",
+  "version": "1.0.0",
+  "description": "Man Overboard emergency system — part of the Floatilla suite",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "mob",
+    "man-overboard",
+    "emergency",
+    "safety",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "signalk-plugin-enabled-by-default": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "mob"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla"
+}
