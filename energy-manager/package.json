@@ -1,0 +1,28 @@
+{
+  "name": "floatilla-energy-manager",
+  "version": "1.0.0",
+  "description": "Floatilla: Intelligent energy management for boats — monitors batteries, solar, shore power and performs smart charging actions",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "energy",
+    "battery",
+    "solar",
+    "shore-power",
+    "nmea2000",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "energy-manager"
+  },
+  "signalk-plugin-enabled-by-default": false,
+  "dependencies": {
+    "suncalc": "^1.9.0"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla"
+}

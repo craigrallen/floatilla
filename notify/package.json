@@ -1,0 +1,27 @@
+{
+  "name": "floatilla-notify",
+  "version": "1.0.0",
+  "description": "Floatilla: Send configurable vessel status notifications and alerts via webhooks (Discord, Telegram, Slack, generic HTTP). Daily digest and threshold alerts.",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "notifications",
+    "webhooks",
+    "discord",
+    "telegram",
+    "slack",
+    "alerts",
+    "vessel-monitoring",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "signalk-plugin-enabled-by-default": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "notify"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla"
+}

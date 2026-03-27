@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logbook</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --card: #fff;
+    --border: #dfe4ea;
+    --text: #2f3542;
+    --muted: #747d8c;
+    --accent: #3742fa;
+    --accent-light: #5352ed;
+    --danger: #e74c3c;
+    --radius: 6px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+  header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  header h1 { font-size: 1.4rem; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .actions button, .actions a {
+    padding: 6px 14px; border-radius: var(--radius); border: 1px solid var(--border);
+    background: var(--card); color: var(--text); cursor: pointer; font-size: 0.85rem;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .actions button:hover, .actions a:hover { background: var(--bg); }
+  .btn-primary { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; }
+  .btn-primary:hover { background: var(--accent-light) !important; }
+
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+  .filter-bar input { padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.85rem; }
+  .filter-bar label { font-size: 0.85rem; color: var(--muted); }
+
+  /* Entry form (modal-like) */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+    z-index: 100; justify-content: center; align-items: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--card); border-radius: 8px; padding: 24px; width: 90%;
+    max-width: 480px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+  .modal h2 { margin-bottom: 12px; font-size: 1.1rem; }
+  .modal label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--muted); }
+  .modal input, .modal select, .modal textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+    font-size: 0.9rem; margin-bottom: 12px;
+  }
+  .modal textarea { min-height: 80px; resize: vertical; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Timeline */
+  .timeline { position: relative; }
+  .entry-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 12px 16px; margin-bottom: 8px; position: relative;
+  }
+  .entry-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .entry-time { font-size: 0.82rem; color: var(--muted); }
+  .entry-badge {
+    display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 0.72rem;
+    font-weight: 600; text-transform: uppercase;
+  }
+  .badge-departure { background: #d4efdf; color: #1e8449; }
+  .badge-arrival { background: #d6eaf8; color: #2471a3; }
+  .badge-watch { background: #fdebd0; color: #b9770e; }
+  .badge-anchor { background: #f5eef8; color: #7d3c98; }
+  .badge-engine { background: #fadbd8; color: #a93226; }
+  .badge-shore { background: #d5f5e3; color: #1a5276; }
+  .badge-weather { background: #ebf5fb; color: #2e86c1; }
+  .badge-note, .badge-manual { background: #eaecee; color: #566573; }
+  .entry-data { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+  .entry-notes { margin-top: 4px; font-size: 0.9rem; }
+  .entry-delete { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.9rem; }
+  .entry-delete:hover { color: var(--danger); }
+
+  .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+  .loading { text-align: center; color: var(--muted); padding: 20px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Logbook</h1>
+    <div class="actions">
+      <a href="export/csv" download>CSV</a>
+      <a href="export/pdf" download>PDF</a>
+      <button class="btn-primary" id="btnNew">+ New Entry</button>
+    </div>
+  </header>
+
+  <div class="filter-bar">
+    <label>From</label>
+    <input type="date" id="filterFrom">
+    <label>To</label>
+    <input type="date" id="filterTo">
+    <button id="btnFilter">Filter</button>
+  </div>
+
+  <div id="timeline" class="timeline">
+    <div class="loading">Loading...</div>
+  </div>
+</div>
+
+<!-- New entry modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>New Log Entry</h2>
+    <label>Category</label>
+    <select id="entryCategory">
+      <option value="note">Note</option>
+      <option value="departure">Departure</option>
+      <option value="arrival">Arrival</option>
+      <option value="anchor">Anchor</option>
+      <option value="engine">Engine</option>
+      <option value="shore">Shore Power</option>
+      <option value="weather">Weather</option>
+      <option value="watch">Watch</option>
+    </select>
+    <label>Notes</label>
+    <textarea id="entryNotes" placeholder="Enter your log note..."></textarea>
+    <label>Author</label>
+    <input type="text" id="entryAuthor" placeholder="Name (optional)">
+    <div class="modal-actions">
+      <button id="btnCancel">Cancel</button>
+      <button class="btn-primary" id="btnSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'entries';
+const timeline = document.getElementById('timeline');
+const modal = document.getElementById('modal');
+
+async function loadEntries() {
+  timeline.innerHTML = '<div class="loading">Loading...</div>';
+  const params = new URLSearchParams();
+  const from = document.getElementById('filterFrom').value;
+  const to = document.getElementById('filterTo').value;
+  if (from) params.set('from', from + 'T00:00:00Z');
+  if (to) params.set('to', to + 'T23:59:59Z');
+
+  try {
+    const res = await fetch(API + '?' + params.toString());
+    const entries = await res.json();
+    render(entries);
+  } catch (e) {
+    timeline.innerHTML = '<div class="empty">Error loading entries</div>';
+  }
+}
+
+function render(entries) {
+  if (!entries.length) {
+    timeline.innerHTML = '<div class="empty">No logbook entries yet</div>';
+    return;
+  }
+  timeline.innerHTML = entries.map(e => `
+    <div class="entry-card">
+      <button class="entry-delete" title="Delete" data-id="${e.id}">&times;</button>
+      <div class="entry-header">
+        <span class="entry-badge badge-${e.category}">${e.category}</span>
+        <span class="entry-time">${fmtTime(e.timestamp)}${e.type === 'auto' ? ' (auto)' : ''}</span>
+      </div>
+      ${e.notes ? '<div class="entry-notes">' + esc(e.notes) + '</div>' : ''}
+      <div class="entry-data">${dataLine(e)}</div>
+    </div>
+  `).join('');
+
+  timeline.querySelectorAll('.entry-delete').forEach(btn => {
+    btn.onclick = () => deleteEntry(btn.dataset.id);
+  });
+}
+
+function dataLine(e) {
+  const parts = [];
+  if (e.position) parts.push(`${e.position.lat.toFixed(4)}, ${e.position.lon.toFixed(4)}`);
+  if (e.sog != null) parts.push(`SOG ${e.sog.toFixed(1)}`);
+  if (e.cog != null) parts.push(`COG ${e.cog.toFixed(0)}&deg;`);
+  if (e.depth != null) parts.push(`Depth ${e.depth.toFixed(1)}m`);
+  if (e.wind && e.wind.speed != null) parts.push(`Wind ${e.wind.speed.toFixed(1)}m/s`);
+  if (e.barometer != null) parts.push(`Baro ${e.barometer.toFixed(0)}Pa`);
+  if (e.author) parts.push(`by ${esc(e.author)}`);
+  return parts.join(' &middot; ');
+}
+
+function fmtTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleString();
+}
+
+function esc(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+async function deleteEntry(id) {
+  if (!confirm('Delete this entry?')) return;
+  await fetch(API + '/' + id, { method: 'DELETE' });
+  loadEntries();
+}
+
+document.getElementById('btnNew').onclick = () => { modal.classList.add('active'); };
+document.getElementById('btnCancel').onclick = () => { modal.classList.remove('active'); };
+modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+
+document.getElementById('btnSave').onclick = async () => {
+  const body = {
+    category: document.getElementById('entryCategory').value,
+    notes: document.getElementById('entryNotes').value,
+    author: document.getElementById('entryAuthor').value
+  };
+  await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  modal.classList.remove('active');
+  document.getElementById('entryNotes').value = '';
+  loadEntries();
+};
+
+document.getElementById('btnFilter').onclick = loadEntries;
+
+loadEntries();
+</script>
+</body>
+</html>

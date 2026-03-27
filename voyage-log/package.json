@@ -1,0 +1,25 @@
+{
+  "name": "floatilla-voyage-log",
+  "version": "1.0.0",
+  "description": "Floatilla: Voyage Data Recorder — automatically logs vessel data to structured JSONL files with voyage tracking, GPX and CSV export",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk",
+    "voyage",
+    "vdr",
+    "data-recorder",
+    "gpx",
+    "logging",
+    "floatilla"
+  ],
+  "author": "Floatilla",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "voyage-log"
+  },
+  "signalk-plugin-enabled-by-default": false,
+  "homepage": "https://github.com/craigrallen/floatilla"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "floatilla-victron-cerbo",
+  "version": "1.0.0",
+  "description": "Floatilla: SignalK plugin to read data from Victron Cerbo GX (Venus OS) via Modbus-TCP",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "floatilla"
+  ],
+  "signalk-plugin-enabled-by-default": false,
+  "author": "Floatilla",
+  "license": "MIT",
+  "dependencies": {
+    "modbus-serial": "^8.0.0",
+    "debug": "^4.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "victron-cerbo"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "floatilla-logbook",
+  "version": "1.0.0",
+  "description": "Floatilla: Electronic logbook for SignalK — automatic entries from vessel data, manual entries, PDF/CSV export",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk-category-instruments",
+    "logbook",
+    "navigation",
+    "floatilla"
+  ],
+  "signalk-plugin-enabled-by-default": false,
+  "webapp": true,
+  "author": "Floatilla",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "pdfkit": "^0.15.0",
+    "uuid": "^10.0.0"
+  },
+  "homepage": "https://github.com/craigrallen/floatilla",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craigrallen/floatilla.git",
+    "directory": "logbook"
+  }
+}
