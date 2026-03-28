@@ -70,11 +70,23 @@ function initialize(db) {
       PRIMARY KEY(waypoint_id, user_id)
     );
 
+    CREATE TABLE IF NOT EXISTS subscriptions (
+      user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+      stripe_customer_id TEXT UNIQUE,
+      stripe_subscription_id TEXT,
+      plan TEXT NOT NULL DEFAULT 'free',
+      status TEXT NOT NULL DEFAULT 'inactive',
+      current_period_end TEXT,
+      cancel_at_period_end INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT DEFAULT (datetime('now'))
+    );
+
     CREATE INDEX IF NOT EXISTS idx_friendships_requester ON friendships(requester_id);
     CREATE INDEX IF NOT EXISTS idx_friendships_addressee ON friendships(addressee_id);
     CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(user_id);
     CREATE INDEX IF NOT EXISTS idx_messages_created ON messages(created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_waypoints_user ON waypoints(user_id);
+    CREATE INDEX IF NOT EXISTS idx_subscriptions_customer ON subscriptions(stripe_customer_id);
   `);
 }
 

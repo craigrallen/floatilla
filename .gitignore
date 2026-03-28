@@ -7,3 +7,4 @@ dist/
 build/
 *.tgz
 package-lock.json
+fleet-social/server/fleet-social.db*

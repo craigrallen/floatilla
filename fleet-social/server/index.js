@@ -17,6 +17,10 @@ const corsOptions = corsOrigins === '*'
   : { origin: corsOrigins.split(',').map(s => s.trim()), credentials: true };
 
 app.use(cors(corsOptions));
+
+// Stripe webhooks need the raw body — mount BEFORE express.json()
+app.use('/billing/webhook', express.raw({ type: 'application/json' }));
+
 app.use(express.json());
 
 // Track connected users: userId -> Set<socketId>
@@ -69,6 +73,7 @@ app.use('/friends', require('./routes/friends'));
 app.use('/messages', require('./routes/messages'));
 app.use('/location', require('./routes/location'));
 app.use('/waypoints', require('./routes/waypoints'));
+app.use('/billing', require('./routes/billing'));
 
 // Initialize database on startup
 getDb();
